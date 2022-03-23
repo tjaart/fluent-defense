@@ -10,7 +10,7 @@ namespace Tests
         [Fact]
         public void TestNotZero()
         {
-            Assert.Throws<Exception>(() => 0.Defend("test").NotZero().Throw());
+            Assert.Throws<ArgumentException>(() => 0.Defend("test").NotZero().Throw());
         }
 
         [Theory]
@@ -18,7 +18,7 @@ namespace Tests
         [InlineData(3, 5)]
         public void TestMin(int num, int min)
         {
-            Assert.Throws<Exception>(() => num.Defend("test").Min(min).Throw());
+            Assert.Throws<ArgumentException>(() => num.Defend("test").Min(min).Throw());
         }
         
         
@@ -33,7 +33,7 @@ namespace Tests
         [Fact]
         public void TestInvalidRange()
         {
-            Assert.Throws<Exception>(() => 5.Defend("asd").InRange(5, 4).IsValid);
+            Assert.ThrowsAny<Exception>(() => 5.Defend("asd").InRange(5, 4).Throw());
         }
 
         [Fact]
