@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentDefense", "FluentDefense\FluentDefense.csproj", "{AC4EAB9B-E6EE-4CD5-9296-50CCD7010CB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentDefense", "src/FluentDefense/FluentDefense.csproj", "{AC4EAB9B-E6EE-4CD5-9296-50CCD7010CB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8C1E8797-251D-47EB-9D11-020B0D83FDAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "src/Tests/Tests.csproj", "{8C1E8797-251D-47EB-9D11-020B0D83FDAB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D37334B2-3557-4A97-A6BC-78D448EE6FFE}"
 	ProjectSection(SolutionItems) = preProject
