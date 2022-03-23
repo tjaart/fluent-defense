@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace FluentDefense.Defenders;
 
@@ -48,11 +47,11 @@ public class DoubleDefender : DefenderBase<DoubleDefender, double?>
         return this;
     }
 
-    public DoubleDefender Min(double minValue, Func<string, double, string>? customMessage = null)
+    public DoubleDefender Min(double minValue)
     {
         if (Value < minValue)
         {
-            AddError($"{ParameterName} value is below the minimum value of {minValue}");
+            AddError($"{ParameterName} value {Value} is below the minimum value of {minValue}");
         }
 
         return this;
@@ -62,7 +61,7 @@ public class DoubleDefender : DefenderBase<DoubleDefender, double?>
     {
         if (Value > maxValue)
         {
-            AddError($"{ParameterName} value is above the maximum value of {maxValue}");
+            AddError($"{ParameterName} value {Value} is above the maximum value of {maxValue}");
         }
 
         return this;

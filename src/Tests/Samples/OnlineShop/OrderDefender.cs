@@ -12,7 +12,7 @@ public class OrderDefender : DefenderBase
         _order = order;
     }
 
-    public OrderDefender NotLateForDelivery()
+    public OrderDefender LateForDelivery()
     {
         if (_order.DeliveryDateUtc.Defend().IsInPastUtc().IsValid)
         {

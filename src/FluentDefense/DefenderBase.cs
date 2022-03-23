@@ -90,6 +90,8 @@ public abstract class DefenderBase<TDefender, TValue> : DefenderBase
 {
     public delegate string CreateCustomMessage(TValue value, string parameterName);
 
+    public delegate void OnFail(TValue value, string parameterName);
+
     public delegate bool ValidateCustom(TValue value);
 
     protected readonly TValue Value;
@@ -122,4 +124,7 @@ public abstract class DefenderBase<TDefender, TValue> : DefenderBase
 
         return (TDefender)this;
     }
+
+    public void WhenFail(OnFail onFail)
+        => onFail(Value, ParameterName);
 }

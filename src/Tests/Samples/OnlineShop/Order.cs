@@ -12,8 +12,9 @@ public class Order
 
     public void Cancel()
     {
-        this.Defend().NotLateForDelivery();
+        this.Defend().LateForDelivery();
         Price.Defend()
-            .Min(10, (p, d) => $"Orders with {p} under & {d} cannot be cancelled");
+            .Min(10)
+            .WhenFail((value, name) => throw new Exception($"I can throw my very own exception: {value}:{name}"));
     }
 }
