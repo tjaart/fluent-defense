@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using FluentDefense;
 
-namespace Tests;
+namespace Tests.Samples.OnlineShop;
 
 public class OrderDefender : DefenderBase
 {

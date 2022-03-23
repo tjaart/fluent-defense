@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using FluentDefense;
 using Xunit;
 
@@ -8,7 +7,6 @@ namespace Tests;
 public class TestDateDefender
 {
     [Fact]
-        
     public void TestNotDefault()
     {
         var dt = DateTime.Now;
@@ -16,11 +14,11 @@ public class TestDateDefender
             .Defend(nameof(dt))
             .NotDefault()
             .Errors;
-            
+
         Assert.Empty(errors
         );
     }
-        
+
     [Fact]
     public void TestNotDefaultError()
     {
@@ -29,7 +27,7 @@ public class TestDateDefender
             .Defend(nameof(dt))
             .NotDefault()
             .Errors;
-            
+
         Assert.NotEmpty(errors
         );
     }

@@ -1,8 +1,7 @@
 using System;
 using FluentDefense;
-using FluentDefense.Defenders;
 
-namespace Tests;
+namespace Tests.Samples.OnlineShop;
 
 public class OnlineShop
 {
@@ -27,29 +26,5 @@ public class OnlineShop
         {
             Price = 5
         };
-    }
-}
-
-public class Order
-{
-    public DateTime DeliveryDateUtc { get; set; }
-
-    public double Price { get; set; }
-    public bool Delivered { get; set; }
-
-    public void Cancel()
-    {
-        this.Defend().NotLateForDelivery();
-        Price.Defend()
-            .Min(10, (p, d) => $"Orders with {p} under & {d} cannot be cancelled");
-    }
-}
-
-public static class TestIntDefenderExtension
-{
-    public static IntDefender IsEven(this IntDefender defender)
-    {
-        defender.Custom(value => value % 2 == 0, (value, name) => $"{value} for {name} is not even");
-        return defender;
     }
 }

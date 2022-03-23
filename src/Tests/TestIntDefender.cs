@@ -1,5 +1,6 @@
 using System;
 using FluentDefense;
+using Tests.Samples.OnlineShop;
 using Xunit;
 
 namespace Tests;
