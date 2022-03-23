@@ -3,7 +3,7 @@ name: .NET
 on:
   create:
     branches:
-      - release/**  
+      - release/**
   push:
     branches: [ master ]
   pull_request:
