@@ -21,13 +21,11 @@ public class OrderDefender : DefenderBase
 
         return this;
     }
-    
-    
 }
 
 public static class OrderDefenderExtensions
 {
-    public static OrderDefender Defend(this Order order, [CallerArgumentExpression("order")]string parameterName="")
+    public static OrderDefender Defend(this Order order, [CallerArgumentExpression("order")] string parameterName = "")
     {
         return new OrderDefender(order, parameterName);
     }

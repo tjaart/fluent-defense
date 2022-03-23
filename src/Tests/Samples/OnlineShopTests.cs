@@ -10,6 +10,5 @@ public class OnlineShopTests
     {
         var onlineShop = new OnlineShop();
         onlineShop.OrderItem(12350, 15, DateTime.UtcNow, DateTime.UtcNow);
-
     }
 }

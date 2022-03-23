@@ -27,6 +27,9 @@ public static class DefensiveExtensions
     public static DateTimeDefender Defend(this DateTime? value, [CallerArgumentExpression("value")] string parameterName = "")
         => new(value, parameterName);
 
+    public static GuidDefender Defend(this Guid? value, [CallerArgumentExpression("value")] string parameterName = "")
+        => new(value, parameterName);
+
     // non nullable variants
 
     public static IntDefender Defend(this int num, [CallerArgumentExpression("num")] string parameterName = "")
@@ -45,5 +48,8 @@ public static class DefensiveExtensions
         => new(num, parameterName);
 
     public static DateTimeDefender Defend(this DateTime value, [CallerArgumentExpression("value")] string parameterName = "")
+        => new(value, parameterName);
+
+    public static GuidDefender Defend(this Guid value, [CallerArgumentExpression("value")] string parameterName = "")
         => new(value, parameterName);
 }
