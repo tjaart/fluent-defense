@@ -106,6 +106,7 @@ public abstract class DefenderBase<TDefender, TValue> : DefenderBase
         Value = value;
     }
 
+    [StackTraceHidden]
     public TValue ValueOrThrow()
     {
         if (IsValid)
