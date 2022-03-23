@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Thorium.FluentDefense.Defenders
+namespace FluentDefense.Defenders
 {
-    public class LongDefender : DefenderBase
+    public class IntDefender : DefenderBase
     {
         private string _parameterName;
-        private long? _num;
+        private int? _num;
 
-        public LongDefender(long? num, string parameterName) : base(parameterName)
+        public IntDefender(int? num, string parameterName) : base(parameterName)
         {
+            
+            
             _num = num;
             _parameterName = parameterName;
         }
-        
-        public LongDefender NotNull()
+
+        public IntDefender NotNull()
         {
             if (!_num.HasValue)
             {
@@ -24,7 +26,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public LongDefender NotZero()
+        public IntDefender NotZero()
         {
             if (_num == 0)
             {
@@ -34,7 +36,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public LongDefender NotNegative()
+        public IntDefender NotNegative()
         {
             if (_num < 0)
             {
@@ -44,16 +46,17 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public LongDefender InRange(long rangeStart, long rangeEnd)
+        public IntDefender InRange(int rangeStart, int rangeEnd)
         {
             Debug.Assert(rangeEnd > rangeStart, "rangeEnd > rangeStart");
+            
             Min(rangeStart);
             Max(rangeEnd);
 
             return this;
         }
 
-        public LongDefender Min(long minValue)
+        public IntDefender Min(int minValue)
         {
             if (_num < minValue)
             {
@@ -63,7 +66,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public LongDefender Max(long maxValue)
+        public IntDefender Max(int maxValue)
         {
             if (_num > maxValue)
             {
@@ -73,7 +76,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public LongDefender Custom(Func<long?, bool> test, string messageTemplate)
+        public IntDefender Custom(Func<int?, bool> test, string messageTemplate)
         {
             Debug.Assert(test != null, nameof(test) + " != null");
             if (!test.Invoke(_num))

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Thorium.FluentDefense.Defenders
+namespace FluentDefense.Defenders
 {
     public class DateTimeDefender : DefenderBase
     {

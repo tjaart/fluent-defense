@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using Thorium.FluentDefense;
+using FluentDefense;
 using Xunit;
 
 namespace Tests

@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <version>$(appveyor_build_version)</version>
-        <id>Thorium.FluentDefense</id>
+        <id>FluentDefense</id>
         <authors>Thorium Dev Team</authors>
         <owners>Thorium Dev Team</owners>
         <licenseUrl>https://raw.githubusercontent.com/ThoriumStack/fluent-defense/master/LICENSE</licenseUrl>

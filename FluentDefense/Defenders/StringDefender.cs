@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Thorium.FluentDefense.Defenders
+namespace FluentDefense.Defenders
 {
     public class StringDefender : DefenderBase
     {

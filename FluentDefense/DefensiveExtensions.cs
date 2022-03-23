@@ -1,7 +1,7 @@
 ﻿using System;
-using Thorium.FluentDefense.Defenders;
+using FluentDefense.Defenders;
 
-namespace Thorium.FluentDefense
+namespace FluentDefense
 {
     public static class DefensiveExtensions
     {

@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using Thorium.FluentDefense;
+using FluentDefense;
 
 namespace Tests
 {

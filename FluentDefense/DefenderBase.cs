@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Thorium.FluentDefense
+namespace FluentDefense
 {
     public abstract class DefenderBase
     {

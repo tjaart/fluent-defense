@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Thorium.FluentDefense.Defenders
+namespace FluentDefense.Defenders
 {
-    public class DoubleDefender : DefenderBase
+    public class DecimalDefender : DefenderBase
     {
         private string _parameterName;
-        private double? _num;
+        private decimal? _num;
 
-        public DoubleDefender(double? num, string parameterName) : base(parameterName)
+        public DecimalDefender(decimal? num, string parameterName) : base(parameterName)
         {
             _num = num;
             _parameterName = parameterName;
         }
-        
-        public DoubleDefender NotNull()
+
+        public DecimalDefender NotNull()
         {
             if (!_num.HasValue)
             {
@@ -23,8 +23,8 @@ namespace Thorium.FluentDefense.Defenders
 
             return this;
         }
-
-        public DoubleDefender NotZero()
+        
+        public DecimalDefender NotZero()
         {
             if (_num == 0)
             {
@@ -34,7 +34,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public DoubleDefender NotNegative()
+        public DecimalDefender NotNegative()
         {
             if (_num < 0)
             {
@@ -44,7 +44,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public DoubleDefender InRange(double rangeStart, double rangeEnd)
+        public DecimalDefender InRange(decimal rangeStart, decimal rangeEnd)
         {
             Debug.Assert(rangeEnd > rangeStart, "rangeEnd > rangeStart");
             Min(rangeStart);
@@ -53,7 +53,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public DoubleDefender Min(double minValue)
+        public DecimalDefender Min(decimal minValue)
         {
             if (_num < minValue)
             {
@@ -63,7 +63,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public DoubleDefender Max(double maxValue)
+        public DecimalDefender Max(decimal maxValue)
         {
             if (_num > maxValue)
             {
@@ -73,7 +73,7 @@ namespace Thorium.FluentDefense.Defenders
             return this;
         }
 
-        public DoubleDefender Custom(Func<double?, bool> test, string messageTemplate)
+        public DecimalDefender Custom(Func<decimal?, bool> test, string messageTemplate)
         {
             Debug.Assert(test != null, nameof(test) + " != null");
             if (!test.Invoke(_num))

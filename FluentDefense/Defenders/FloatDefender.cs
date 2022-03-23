@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Thorium.FluentDefense.Defenders
+namespace FluentDefense.Defenders
 {
     public class FloatDefender : DefenderBase
     {
