@@ -1,112 +1,111 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace FluentDefense.Defenders
+namespace FluentDefense.Defenders;
+
+public class StringDefender : DefenderBase
 {
-    public class StringDefender : DefenderBase
+    private readonly string _str;
+
+    public StringDefender(string s, string parameterName) : base(parameterName)
     {
-        private readonly string _str;
+        _str = s;
+    }
 
-        public StringDefender(string s, string parameterName) : base(parameterName)
+    public StringDefender ValidUri(UriKind uriKind = UriKind.Absolute)
+    {
+        NotNullOrWhiteSpace();
+        if (!Uri.TryCreate(_str, uriKind, out _))
         {
-            _str = s;
+            AddError($"\"{_str}\" Uri invalid.");
         }
 
-        public StringDefender ValidUri(UriKind uriKind = UriKind.Absolute)
-        {
-            NotNullOrWhiteSpace();
-            if (!Uri.TryCreate(_str, uriKind, out _))
-            {
-                AddError($"\"{_str}\" Uri invalid.");
-            }
+        return this;
+    }
 
+    public StringDefender NotNullOrWhiteSpace()
+    {
+        if (string.IsNullOrWhiteSpace(_str))
+        {
+            AddError($"{ParameterName} cannot be null or whitespace.");
+        }
+
+        return this;
+    }
+
+    public StringDefender NotNull()
+    {
+        if (_str == null)
+        {
+            AddError($"{ParameterName} cannot be null.");
+        }
+
+        return this;
+    }
+
+    public StringDefender NotNullOrEmpty()
+    {
+        if (string.IsNullOrEmpty(_str))
+        {
+            AddError($"{ParameterName} cannot be null or empty.");
+        }
+
+        return this;
+    }
+
+    public StringDefender Custom(Func<string, bool> validator, string messageTemplate)
+    {
+        if (validator(_str))
+        {
+            AddError(string.Format(messageTemplate, ParameterName));
+        }
+
+        return this;
+    }
+
+    public StringDefender ValidEmail()
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(_str);
             return this;
         }
-
-        public StringDefender NotNullOrWhiteSpace()
+        catch
         {
-            if (string.IsNullOrWhiteSpace(_str))
-            {
-                AddError($"{ParameterName} cannot be null or whitespace.");
-            }
-
+            AddError($"\"{_str}\" is not a valid e-mail address.");
             return this;
         }
+    }
 
-        public StringDefender NotNull()
+    public StringDefender MatchesRegex(string pattern)
+    {
+        if (!Regex.IsMatch(_str, pattern))
         {
-            if (_str == null)
-            {
-                AddError($"{ParameterName} cannot be null.");
-            }
-
-            return this;
+            AddError($"\"{_str}\" does not match required pattern \"{pattern}\"");
         }
 
-        public StringDefender NotNullOrEmpty()
-        {
-            if (string.IsNullOrEmpty(_str))
-            {
-                AddError($"{ParameterName} cannot be null or empty.");
-            }
+        return this;
+    }
 
-            return this;
+    public StringDefender MinLength(int minLength)
+    {
+        NotNull();
+        if (_str?.Length < minLength)
+        {
+            AddError($"\"{_str}\" is shorter than the required minimum length of {minLength}");
         }
 
-        public StringDefender Custom(Func<string, bool> validator, string messageTemplate)
-        {
-            if (validator(_str))
-            {
-                AddError(string.Format(messageTemplate, ParameterName));
-            }
+        return this;
+    }
 
-            return this;
+    public StringDefender MaxLength(int maxLength)
+    {
+        NotNull();
+        if (_str?.Length > maxLength)
+        {
+            AddError($"\"{_str}\" is longer than the required maximum length of {maxLength}");
         }
 
-        public StringDefender ValidEmail()
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(_str);
-                return this;
-            }
-            catch
-            {
-                AddError($"\"{_str}\" is not a valid e-mail address.");
-                return this;
-            }
-        }
-
-        public StringDefender MatchesRegex(string pattern)
-        {
-            if (!Regex.IsMatch(_str, pattern))
-            {
-                AddError($"\"{_str}\" does not match required pattern \"{pattern}\"");
-            }
-
-            return this;
-        }
-
-        public StringDefender MinLength(int minLength)
-        {
-            NotNull();
-            if (_str?.Length < minLength)
-            {
-                AddError($"\"{_str}\" is shorter than the required minimum length of {minLength}");
-            }
-
-            return this;
-        }
-
-        public StringDefender MaxLength(int maxLength)
-        {
-            NotNull();
-            if (_str?.Length > maxLength)
-            {
-                AddError($"\"{_str}\" is longer than the required maximum length of {maxLength}");
-            }
-
-            return this;
-        }
+        return this;
     }
 }

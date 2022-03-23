@@ -3,35 +3,34 @@ using System.ComponentModel;
 using FluentDefense;
 using Xunit;
 
-namespace Tests
+namespace Tests;
+
+public class TestDateDefender
 {
-    public class TestDateDefender
+    [Fact]
+        
+    public void TestNotDefault()
     {
-        [Fact]
-        
-        public void TestNotDefault()
-        {
-            var dt = DateTime.Now;
-            var errors = dt
-                .Defend(nameof(dt))
-                .NotDefault()
-                .Errors;
+        var dt = DateTime.Now;
+        var errors = dt
+            .Defend(nameof(dt))
+            .NotDefault()
+            .Errors;
             
-            Assert.Empty(errors
-                    );
-        }
+        Assert.Empty(errors
+        );
+    }
         
-        [Fact]
-        public void TestNotDefaultError()
-        {
-            var dt = new DateTime();
-            var errors = dt
-                .Defend(nameof(dt))
-                .NotDefault()
-                .Errors;
+    [Fact]
+    public void TestNotDefaultError()
+    {
+        var dt = new DateTime();
+        var errors = dt
+            .Defend(nameof(dt))
+            .NotDefault()
+            .Errors;
             
-            Assert.NotEmpty(errors
-            );
-        }
+        Assert.NotEmpty(errors
+        );
     }
 }

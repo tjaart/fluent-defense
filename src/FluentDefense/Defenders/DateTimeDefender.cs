@@ -1,82 +1,81 @@
 ﻿using System;
 
-namespace FluentDefense.Defenders
+namespace FluentDefense.Defenders;
+
+public class DateTimeDefender : DefenderBase
 {
-    public class DateTimeDefender : DefenderBase
+    private readonly DateTime? _value;
+        
+    public static Func<DateTime> MomentGenerator { get; set; } = () => DateTime.Now;
+    public static Func<DateTime> MomentGeneratorUtc { get; set; } = () => DateTime.UtcNow;
+
+    public DateTimeDefender(DateTime? value, string parameterName) : base(parameterName)
     {
-        private readonly DateTime? _value;
+        _value = value;
+    }
+
+    public DateTimeDefender NotNull()
+    {
+        if (!_value.HasValue)
+        {
+            AddError($"{ParameterName} cannot be null");
+        }
+
+        return this;
+    }
+
+    public DateTimeDefender IsInFuture()
+    {
+        NotNull();
+        if (_value == null || _value.Value <= MomentGenerator())
+        {
+            AddError($"{_value} is not a future date.");
+        }
+
+        return this;
+    }
         
-        public static Func<DateTime> MomentGenerator { get; set; } = () => DateTime.Now;
-        public static Func<DateTime> MomentGeneratorUtc { get; set; } = () => DateTime.UtcNow;
-
-        public DateTimeDefender(DateTime? value, string parameterName) : base(parameterName)
+    public DateTimeDefender IsInPast()
+    {
+        NotNull();
+        if (_value == null || _value.Value >= DateTime.Now)
         {
-            _value = value;
+            AddError($"{_value} is not a future date.");
         }
 
-        public DateTimeDefender NotNull()
-        {
-            if (!_value.HasValue)
-            {
-                AddError($"{ParameterName} cannot be null");
-            }
-
-            return this;
-        }
-
-        public DateTimeDefender IsInFuture()
-        {
-            NotNull();
-            if (_value == null || _value.Value <= MomentGenerator())
-            {
-                AddError($"{_value} is not a future date.");
-            }
-
-            return this;
-        }
+        return this;
+    }
         
-        public DateTimeDefender IsInPast()
+    public DateTimeDefender IsInFutureUtc()
+    {
+        NotNull();
+        if (_value == null || _value.Value <= MomentGeneratorUtc())
         {
-            NotNull();
-            if (_value == null || _value.Value >= DateTime.Now)
-            {
-                AddError($"{_value} is not a future date.");
-            }
-
-            return this;
+            AddError($"{_value} is not a UTC future date.");
         }
+
+        return this;
+    }
         
-        public DateTimeDefender IsInFutureUtc()
+    public DateTimeDefender IsInPastUtc()
+    {
+        NotNull();
+        if (_value == null || _value.Value >= MomentGeneratorUtc())
         {
-            NotNull();
-            if (_value == null || _value.Value <= MomentGeneratorUtc())
-            {
-                AddError($"{_value} is not a UTC future date.");
-            }
-
-            return this;
-        }
-        
-        public DateTimeDefender IsInPastUtc()
-        {
-            NotNull();
-            if (_value == null || _value.Value >= MomentGeneratorUtc())
-            {
-                AddError($"{_value} is not a future date.");
-            }
-
-            return this;
+            AddError($"{_value} is not a future date.");
         }
 
-        public DateTimeDefender NotDefault()
-        {
-            NotNull();
-            if (_value == null || _value.Value == default)
-            {
-                AddError($"{_value} was never initialized.");
-            }
+        return this;
+    }
 
-            return this;
+    public DateTimeDefender NotDefault()
+    {
+        NotNull();
+        if (_value == null || _value.Value == default)
+        {
+            AddError($"{_value} was never initialized.");
         }
+
+        return this;
     }
 }

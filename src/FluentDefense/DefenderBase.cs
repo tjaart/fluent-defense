@@ -4,117 +4,116 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace FluentDefense
+namespace FluentDefense;
+
+public abstract class DefenderBase
 {
-    public abstract class DefenderBase
+    protected readonly string ParameterName;
+
+    private readonly List<string> _messages = new List<string>();
+
+    protected DefenderBase(string parameterName)
     {
-        protected readonly string ParameterName;
+        ParameterName = parameterName;
+    }
 
-        private readonly List<string> _messages = new List<string>();
-
-        protected DefenderBase(string parameterName)
+    /// <summary>
+    /// Throw an exception if any of the validations fail
+    /// </summary>
+    /// <exception cref="ArgumentException"></exception>
+    [StackTraceHidden]
+    [DebuggerHidden]
+    public void Throw()
+    {
+        if (!_messages.Any())
         {
-            ParameterName = parameterName;
+            return;
         }
+        JustThrow();
+    }
 
-        /// <summary>
-        /// Throw an exception if any of the validations fail
-        /// </summary>
-        /// <exception cref="ArgumentException"></exception>
-        [StackTraceHidden]
-        [DebuggerHidden]
-        public void Throw()
+    [DoesNotReturn]
+    [StackTraceHidden]
+    [DebuggerHidden]
+    protected void JustThrow() 
+        => throw new ArgumentException(ErrorMessage, ParameterName);
+
+    private List<string> GetFinalList()
+    {
+        var finalList = new List<string>();
+        if (!_messages.Any())
         {
-            if (!_messages.Any())
-            {
-                return;
-            }
-            JustThrow();
-        }
-
-        [DoesNotReturn]
-        [StackTraceHidden]
-        [DebuggerHidden]
-        protected void JustThrow() 
-            => throw new ArgumentException(ErrorMessage, ParameterName);
-
-        private List<string> GetFinalList()
-        {
-            var finalList = new List<string>();
-            if (!_messages.Any())
-            {
-                return finalList;
-            }
-
-            finalList.Add($"{ParameterName} is invalid.");
-            finalList.AddRange(_messages);
             return finalList;
         }
 
-        /// <summary>
-        /// True if no validation errors occurred in the call chain
-        /// </summary>
-        public bool IsValid => !_messages.Any();
+        finalList.Add($"{ParameterName} is invalid.");
+        finalList.AddRange(_messages);
+        return finalList;
+    }
 
-        /// <summary>
-        /// Get a list of errors
-        /// </summary>
-        public List<string> Errors => GetFinalList();
+    /// <summary>
+    /// True if no validation errors occurred in the call chain
+    /// </summary>
+    public bool IsValid => !_messages.Any();
 
-        /// <summary>
-        /// Get a single string newline separated list of errors
-        /// </summary>
-        public string ErrorMessage
+    /// <summary>
+    /// Get a list of errors
+    /// </summary>
+    public List<string> Errors => GetFinalList();
+
+    /// <summary>
+    /// Get a single string newline separated list of errors
+    /// </summary>
+    public string ErrorMessage
+    {
+        get
         {
-            get
+            var finalList = GetFinalList();
+
+            if (!finalList.Any())
             {
-                var finalList = GetFinalList();
-
-                if (!finalList.Any())
-                {
-                    return "";
-                }
-
-                return string.Join("\n", finalList);
+                return "";
             }
-        }
 
-        protected void AddError(string errorMessage)
-        {
-            _messages.Add(errorMessage);
+            return string.Join("\n", finalList);
         }
     }
 
-    public abstract class DefenderBase<TDefender, TValue> : DefenderBase 
-    where TDefender : DefenderBase<TDefender, TValue>
+    protected void AddError(string errorMessage)
     {
-        protected readonly TValue Value;
+        _messages.Add(errorMessage);
+    }
+}
 
-        protected DefenderBase(string parameterName, TValue value) : base(parameterName)
-        {
-            Value = value;
-        }
+public abstract class DefenderBase<TDefender, TValue> : DefenderBase 
+    where TDefender : DefenderBase<TDefender, TValue>
+{
+    protected readonly TValue Value;
+
+    protected DefenderBase(string parameterName, TValue value) : base(parameterName)
+    {
+        Value = value;
+    }
         
-        public TValue ValueOrThrow()
+    public TValue ValueOrThrow()
+    {
+        if (IsValid)
         {
-            if (IsValid)
-            {
-                return Value;
-            }
-
-            JustThrow();
-            return default;
+            return Value;
         }
+
+        JustThrow();
+        return default;
+    }
         
-        public TDefender Custom(Func<TValue, bool> test, string messageTemplate)
+    public TDefender Custom(Func<TValue, bool> test, string messageTemplate)
+    {
+        Debug.Assert(test != null, nameof(test) + " != null");
+        if (!test.Invoke(Value))
         {
-            Debug.Assert(test != null, nameof(test) + " != null");
-            if (!test.Invoke(Value))
-            {
-                AddError(string.Format(messageTemplate, Value));
-            }
-
-            return (TDefender)this;
+            AddError(string.Format(messageTemplate, Value));
         }
+
+        return (TDefender)this;
     }
 }
