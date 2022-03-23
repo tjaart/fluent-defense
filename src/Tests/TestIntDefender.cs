@@ -1,7 +1,6 @@
 using System;
-using Xunit;
 using FluentDefense;
-using Xunit.Sdk;
+using Xunit;
 
 namespace Tests;
 
@@ -20,8 +19,8 @@ public class TestIntDefender
     {
         Assert.Throws<ArgumentException>(() => num.Defend("test").Min(min).Throw());
     }
-        
-        
+
+
     [Theory]
     [InlineData(0, -1, 5)]
     [InlineData(3, 1, 20)]
@@ -40,8 +39,6 @@ public class TestIntDefender
     public void CustomCheck()
     {
         var result = 35.Defend()
-            .DivisibleBy10();
-
-            
+            .IsEven();
     }
 }

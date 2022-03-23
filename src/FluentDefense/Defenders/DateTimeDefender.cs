@@ -2,17 +2,17 @@
 
 namespace FluentDefense.Defenders;
 
-public class DateTimeDefender : DefenderBase
+public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
 {
     private readonly DateTime? _value;
-        
-    public static Func<DateTime> MomentGenerator { get; set; } = () => DateTime.Now;
-    public static Func<DateTime> MomentGeneratorUtc { get; set; } = () => DateTime.UtcNow;
 
-    public DateTimeDefender(DateTime? value, string parameterName) : base(parameterName)
+    public DateTimeDefender(DateTime? value, string parameterName) : base(parameterName, value)
     {
         _value = value;
     }
+
+    public static Func<DateTime> Now { get; set; } = () => DateTime.Now;
+    public static Func<DateTime> NowUtc { get; set; } = () => DateTime.UtcNow;
 
     public DateTimeDefender NotNull()
     {
@@ -27,14 +27,14 @@ public class DateTimeDefender : DefenderBase
     public DateTimeDefender IsInFuture()
     {
         NotNull();
-        if (_value == null || _value.Value <= MomentGenerator())
+        if (_value == null || _value.Value <= Now())
         {
             AddError($"{_value} is not a future date.");
         }
 
         return this;
     }
-        
+
     public DateTimeDefender IsInPast()
     {
         NotNull();
@@ -45,22 +45,22 @@ public class DateTimeDefender : DefenderBase
 
         return this;
     }
-        
+
     public DateTimeDefender IsInFutureUtc()
     {
         NotNull();
-        if (_value == null || _value.Value <= MomentGeneratorUtc())
+        if (_value == null || _value.Value <= NowUtc())
         {
             AddError($"{_value} is not a UTC future date.");
         }
 
         return this;
     }
-        
+
     public DateTimeDefender IsInPastUtc()
     {
         NotNull();
-        if (_value == null || _value.Value >= MomentGeneratorUtc())
+        if (_value == null || _value.Value >= NowUtc())
         {
             AddError($"{_value} is not a future date.");
         }

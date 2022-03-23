@@ -8,47 +8,12 @@ namespace FluentDefense;
 
 public abstract class DefenderBase
 {
-    protected readonly string ParameterName;
-
     private readonly List<string> _messages = new List<string>();
+    protected readonly string ParameterName;
 
     protected DefenderBase(string parameterName)
     {
         ParameterName = parameterName;
-    }
-
-    /// <summary>
-    /// Throw an exception if any of the validations fail
-    /// </summary>
-    /// <exception cref="ArgumentException"></exception>
-    [StackTraceHidden]
-    [DebuggerHidden]
-    public void Throw()
-    {
-        if (!_messages.Any())
-        {
-            return;
-        }
-        JustThrow();
-    }
-
-    [DoesNotReturn]
-    [StackTraceHidden]
-    [DebuggerHidden]
-    protected void JustThrow() 
-        => throw new ArgumentException(ErrorMessage, ParameterName);
-
-    private List<string> GetFinalList()
-    {
-        var finalList = new List<string>();
-        if (!_messages.Any())
-        {
-            return finalList;
-        }
-
-        finalList.Add($"{ParameterName} is invalid.");
-        finalList.AddRange(_messages);
-        return finalList;
     }
 
     /// <summary>
@@ -79,22 +44,63 @@ public abstract class DefenderBase
         }
     }
 
+    /// <summary>
+    /// Throw an exception if any of the validations fail
+    /// </summary>
+    /// <exception cref="ArgumentException"></exception>
+    [StackTraceHidden]
+    [DebuggerHidden]
+    public void Throw()
+    {
+        if (!_messages.Any())
+        {
+            return;
+        }
+
+        JustThrow();
+    }
+
+    [DoesNotReturn]
+    [StackTraceHidden]
+    [DebuggerHidden]
+    protected void JustThrow()
+        => throw new ArgumentException(ErrorMessage, ParameterName);
+
+    private List<string> GetFinalList()
+    {
+        var finalList = new List<string>();
+        if (!_messages.Any())
+        {
+            return finalList;
+        }
+
+        finalList.Add($"{ParameterName} is invalid.");
+        finalList.AddRange(_messages);
+        return finalList;
+    }
+
     protected void AddError(string errorMessage)
     {
         _messages.Add(errorMessage);
     }
 }
 
-public abstract class DefenderBase<TDefender, TValue> : DefenderBase 
+public abstract class DefenderBase<TDefender, TValue> : DefenderBase
     where TDefender : DefenderBase<TDefender, TValue>
 {
+    public delegate string CreateCustomMessage(TValue value, string parameterName);
+
+    public delegate bool ValidateCustom(TValue value);
+
     protected readonly TValue Value;
 
     protected DefenderBase(string parameterName, TValue value) : base(parameterName)
     {
+        parameterName.Defend()
+            .NotNullOrWhiteSpace();
         Value = value;
     }
-        
+
     public TValue ValueOrThrow()
     {
         if (IsValid)
@@ -105,13 +111,13 @@ public abstract class DefenderBase<TDefender, TValue> : DefenderBase
         JustThrow();
         return default;
     }
-        
-    public TDefender Custom(Func<TValue, bool> test, string messageTemplate)
+
+    public TDefender Custom(ValidateCustom test, CreateCustomMessage messageTemplateBuilder)
     {
         Debug.Assert(test != null, nameof(test) + " != null");
         if (!test.Invoke(Value))
         {
-            AddError(string.Format(messageTemplate, Value));
+            AddError(messageTemplateBuilder(Value, ParameterName));
         }
 
         return (TDefender)this;

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace FluentDefense.Defenders;
 
 public class DecimalDefender : DefenderBase<DecimalDefender, decimal?>
 {
-        
-
     public DecimalDefender(decimal? num, string parameterName) : base(parameterName, num)
     {
-        
     }
 
     public DecimalDefender NotNull()
@@ -21,7 +17,7 @@ public class DecimalDefender : DefenderBase<DecimalDefender, decimal?>
 
         return this;
     }
-        
+
     public DecimalDefender NotZero()
     {
         if (Value == 0)
