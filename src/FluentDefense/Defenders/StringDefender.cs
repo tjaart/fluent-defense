@@ -3,21 +3,18 @@ using System.Text.RegularExpressions;
 
 namespace FluentDefense.Defenders;
 
-public class StringDefender : DefenderBase
+public class StringDefender : DefenderBase<StringDefender, string?>
 {
-    private readonly string _str;
-
-    public StringDefender(string s, string parameterName) : base(parameterName)
+    public StringDefender(string s, string parameterName) : base(parameterName, s)
     {
-        _str = s;
     }
 
     public StringDefender ValidUri(UriKind uriKind = UriKind.Absolute)
     {
         NotNullOrWhiteSpace();
-        if (!Uri.TryCreate(_str, uriKind, out _))
+        if (!Uri.TryCreate(Value, uriKind, out _))
         {
-            AddError($"\"{_str}\" Uri invalid.");
+            AddError($"\"{Value}\" Uri invalid.");
         }
 
         return this;
@@ -25,7 +22,7 @@ public class StringDefender : DefenderBase
 
     public StringDefender NotNullOrWhiteSpace()
     {
-        if (string.IsNullOrWhiteSpace(_str))
+        if (string.IsNullOrWhiteSpace(Value))
         {
             AddError($"{ParameterName} cannot be null or whitespace.");
         }
@@ -35,7 +32,7 @@ public class StringDefender : DefenderBase
 
     public StringDefender NotNull()
     {
-        if (_str == null)
+        if (Value == null)
         {
             AddError($"{ParameterName} cannot be null.");
         }
@@ -45,19 +42,9 @@ public class StringDefender : DefenderBase
 
     public StringDefender NotNullOrEmpty()
     {
-        if (string.IsNullOrEmpty(_str))
+        if (string.IsNullOrEmpty(Value))
         {
             AddError($"{ParameterName} cannot be null or empty.");
-        }
-
-        return this;
-    }
-
-    public StringDefender Custom(Func<string, bool> validator, string messageTemplate)
-    {
-        if (validator(_str))
-        {
-            AddError(string.Format(messageTemplate, ParameterName));
         }
 
         return this;
@@ -67,21 +54,21 @@ public class StringDefender : DefenderBase
     {
         try
         {
-            var addr = new System.Net.Mail.MailAddress(_str);
+            var addr = new System.Net.Mail.MailAddress(Value);
             return this;
         }
         catch
         {
-            AddError($"\"{_str}\" is not a valid e-mail address.");
+            AddError($"\"{Value}\" is not a valid e-mail address.");
             return this;
         }
     }
 
     public StringDefender MatchesRegex(string pattern)
     {
-        if (!Regex.IsMatch(_str, pattern))
+        if (!Regex.IsMatch(Value, pattern))
         {
-            AddError($"\"{_str}\" does not match required pattern \"{pattern}\"");
+            AddError($"\"{Value}\" does not match required pattern \"{pattern}\"");
         }
 
         return this;
@@ -90,9 +77,9 @@ public class StringDefender : DefenderBase
     public StringDefender MinLength(int minLength)
     {
         NotNull();
-        if (_str?.Length < minLength)
+        if (Value?.Length < minLength)
         {
-            AddError($"\"{_str}\" is shorter than the required minimum length of {minLength}");
+            AddError($"\"{Value}\" is shorter than the required minimum length of {minLength}");
         }
 
         return this;
@@ -101,9 +88,9 @@ public class StringDefender : DefenderBase
     public StringDefender MaxLength(int maxLength)
     {
         NotNull();
-        if (_str?.Length > maxLength)
+        if (Value?.Length > maxLength)
         {
-            AddError($"\"{_str}\" is longer than the required maximum length of {maxLength}");
+            AddError($"\"{Value}\" is longer than the required maximum length of {maxLength}");
         }
 
         return this;

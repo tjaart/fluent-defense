@@ -1,24 +1,18 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace FluentDefense.Defenders;
 
-public class LongDefender : DefenderBase
+public class LongDefender : DefenderBase<LongDefender, long?>
 {
-    private string _parameterName;
-    private long? _num;
-
-    public LongDefender(long? num, string parameterName) : base(parameterName)
+    public LongDefender(long? value, string parameterName) : base(parameterName, value)
     {
-        _num = num;
-        _parameterName = parameterName;
     }
-        
+
     public LongDefender NotNull()
     {
-        if (!_num.HasValue)
+        if (!Value.HasValue)
         {
-            AddError($"{_parameterName} cannot be null.");
+            AddError($"{ParameterName} cannot be null.");
         }
 
         return this;
@@ -26,9 +20,9 @@ public class LongDefender : DefenderBase
 
     public LongDefender NotZero()
     {
-        if (_num == 0)
+        if (Value == 0)
         {
-            AddError($"{_parameterName} cannot be zero.");
+            AddError($"{ParameterName} cannot be zero.");
         }
 
         return this;
@@ -36,9 +30,9 @@ public class LongDefender : DefenderBase
 
     public LongDefender NotNegative()
     {
-        if (_num < 0)
+        if (Value < 0)
         {
-            AddError($"{_parameterName} cannot be negative.");
+            AddError($"{ParameterName} cannot be negative.");
         }
 
         return this;
@@ -55,9 +49,9 @@ public class LongDefender : DefenderBase
 
     public LongDefender Min(long minValue)
     {
-        if (_num < minValue)
+        if (Value < minValue)
         {
-            AddError($"{_parameterName} value is below the minimum value of {minValue}");
+            AddError($"{ParameterName} value is below the minimum value of {minValue}");
         }
 
         return this;
@@ -65,20 +59,9 @@ public class LongDefender : DefenderBase
 
     public LongDefender Max(long maxValue)
     {
-        if (_num > maxValue)
+        if (Value > maxValue)
         {
-            AddError($"{_parameterName} value is above the maximum value of {maxValue}");
-        }
-
-        return this;
-    }
-
-    public LongDefender Custom(Func<long?, bool> test, string messageTemplate)
-    {
-        Debug.Assert(test != null, nameof(test) + " != null");
-        if (!test.Invoke(_num))
-        {
-            AddError(string.Format(messageTemplate, _num));
+            AddError($"{ParameterName} value is above the maximum value of {maxValue}");
         }
 
         return this;
