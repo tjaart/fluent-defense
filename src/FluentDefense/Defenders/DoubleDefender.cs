@@ -3,22 +3,17 @@ using System.Diagnostics;
 
 namespace FluentDefense.Defenders;
 
-public class DoubleDefender : DefenderBase
+public class DoubleDefender : DefenderBase<DoubleDefender, double?>
 {
-    private string _parameterName;
-    private double? _num;
-
-    public DoubleDefender(double? num, string parameterName) : base(parameterName)
+    public DoubleDefender(double? value, string parameterName) : base(parameterName, value)
     {
-        _num = num;
-        _parameterName = parameterName;
     }
-        
+
     public DoubleDefender NotNull()
     {
-        if (!_num.HasValue)
+        if (!Value.HasValue)
         {
-            AddError($"{_parameterName} cannot be null.");
+            AddError($"{ParameterName} cannot be null.");
         }
 
         return this;
@@ -26,9 +21,9 @@ public class DoubleDefender : DefenderBase
 
     public DoubleDefender NotZero()
     {
-        if (_num == 0)
+        if (Value == 0)
         {
-            AddError($"{_parameterName} cannot be zero.");
+            AddError($"{ParameterName} cannot be zero.");
         }
 
         return this;
@@ -36,9 +31,9 @@ public class DoubleDefender : DefenderBase
 
     public DoubleDefender NotNegative()
     {
-        if (_num < 0)
+        if (Value < 0)
         {
-            AddError($"{_parameterName} cannot be negative.");
+            AddError($"{ParameterName} cannot be negative.");
         }
 
         return this;
@@ -53,11 +48,11 @@ public class DoubleDefender : DefenderBase
         return this;
     }
 
-    public DoubleDefender Min(double minValue, Func<string, double, string>? customMessage=null)
+    public DoubleDefender Min(double minValue, Func<string, double, string>? customMessage = null)
     {
-        if (_num < minValue)
+        if (Value < minValue)
         {
-            AddError($"{_parameterName} value is below the minimum value of {minValue}");
+            AddError($"{ParameterName} value is below the minimum value of {minValue}");
         }
 
         return this;
@@ -65,20 +60,9 @@ public class DoubleDefender : DefenderBase
 
     public DoubleDefender Max(double maxValue)
     {
-        if (_num > maxValue)
+        if (Value > maxValue)
         {
-            AddError($"{_parameterName} value is above the maximum value of {maxValue}");
-        }
-
-        return this;
-    }
-
-    public DoubleDefender Custom(Func<double?, bool> test, string messageTemplate)
-    {
-        Debug.Assert(test != null, nameof(test) + " != null");
-        if (!test.Invoke(_num))
-        {
-            AddError(string.Format(messageTemplate, _num));
+            AddError($"{ParameterName} value is above the maximum value of {maxValue}");
         }
 
         return this;
