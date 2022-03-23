@@ -79,7 +79,7 @@ You can then use it as you would use the defender normally, and mix it in with e
 itemId.Defend()
     .NotZero()
     .NotNegative()
-    .IsEven()
+    .IsEven() // chain your custom extension easily
     .Custom(i => i.ToString().Length == 5, (_, _) => "Order ids must be five digits")
     .Throw();
 ```
