@@ -8,7 +8,7 @@ namespace FluentDefense;
 
 public abstract class DefenderBase
 {
-    private readonly List<string> _messages = new List<string>();
+    private readonly List<string> _messages = new();
     protected readonly string ParameterName;
 
     protected DefenderBase(string parameterName)
@@ -125,6 +125,9 @@ public abstract class DefenderBase<TDefender, TValue> : DefenderBase
         return (TDefender)this;
     }
 
-    public void WhenFail(OnFail onFail)
-        => onFail(Value, ParameterName);
+    public DefenderBase<TDefender, TValue> WhenFail(OnFail onFail)
+    {
+        onFail(Value, ParameterName);
+        return this;
+    }
 }
