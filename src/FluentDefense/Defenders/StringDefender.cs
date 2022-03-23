@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 
 namespace FluentDefense.Defenders;
 
@@ -64,7 +65,7 @@ public class StringDefender : DefenderBase<StringDefender, string?>
         }
     }
 
-    public StringDefender MatchesRegex(string pattern)
+    public StringDefender MatchesRegex([RegexPattern] string pattern)
     {
         NotNull();
         if (!Regex.IsMatch(Value, pattern))
