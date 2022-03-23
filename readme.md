@@ -1,6 +1,11 @@
-# Thorium Defensive Extensions
+# Defensive Extensions
 
 A library that makes defensive programming easier. 
+
+Goals briefly: 
+- Zero dependency
+- Extensible
+- Developer Friendly
 
 ## What is defensive programming?
 
