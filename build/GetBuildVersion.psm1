@@ -1,3 +1,4 @@
+# lifted from https://raw.githubusercontent.com/MADE-Apps/MADE.NET/main/build/GetBuildVersion.psm1
 Function GetBuildVersion {
     Param (
         [string]$VersionString
