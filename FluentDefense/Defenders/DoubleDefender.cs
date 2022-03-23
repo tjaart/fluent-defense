@@ -53,7 +53,7 @@ namespace FluentDefense.Defenders
             return this;
         }
 
-        public DoubleDefender Min(double minValue)
+        public DoubleDefender Min(double minValue, Func<string, double, string>? customMessage=null)
         {
             if (_num < minValue)
             {

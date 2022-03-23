@@ -3,24 +3,17 @@ using System.Diagnostics;
 
 namespace FluentDefense.Defenders
 {
-    public class IntDefender : DefenderBase
+    public class IntDefender : DefenderBase<IntDefender, int?>
     {
-        private string _parameterName;
-        private int? _num;
-
-        public IntDefender(int? num, string parameterName) : base(parameterName)
+        public IntDefender(int? num, string parameterName) : base(parameterName, num)
         {
-            
-            
-            _num = num;
-            _parameterName = parameterName;
         }
 
         public IntDefender NotNull()
         {
-            if (!_num.HasValue)
+            if (!Value.HasValue)
             {
-                AddError($"{_parameterName} cannot be null.");
+                AddError($"{ParameterName} cannot be null.");
             }
 
             return this;
@@ -28,9 +21,9 @@ namespace FluentDefense.Defenders
 
         public IntDefender NotZero()
         {
-            if (_num == 0)
+            if (Value == 0)
             {
-                AddError($"{_parameterName} cannot be zero.");
+                AddError($"{ParameterName} cannot be zero.");
             }
 
             return this;
@@ -38,9 +31,9 @@ namespace FluentDefense.Defenders
 
         public IntDefender NotNegative()
         {
-            if (_num < 0)
+            if (Value < 0)
             {
-                AddError($"{_parameterName} cannot be negative.");
+                AddError($"{ParameterName} cannot be negative.");
             }
 
             return this;
@@ -58,9 +51,9 @@ namespace FluentDefense.Defenders
 
         public IntDefender Min(int minValue)
         {
-            if (_num < minValue)
+            if (Value < minValue)
             {
-                AddError($"{_parameterName} value is below the minimum value of {minValue}");
+                AddError($"{ParameterName} value is below the minimum value of {minValue}");
             }
 
             return this;
@@ -68,23 +61,23 @@ namespace FluentDefense.Defenders
 
         public IntDefender Max(int maxValue)
         {
-            if (_num > maxValue)
+            if (Value > maxValue)
             {
-                AddError($"{_parameterName} value is above the maximum value of {maxValue}");
+                AddError($"{ParameterName} value is above the maximum value of {maxValue}");
             }
 
             return this;
         }
 
-        public IntDefender Custom(Func<int?, bool> test, string messageTemplate)
-        {
-            Debug.Assert(test != null, nameof(test) + " != null");
-            if (!test.Invoke(_num))
-            {
-                AddError(string.Format(messageTemplate, _num));
-            }
-
-            return this;
-        }
+        // public IntDefender Custom(Func<int?, bool> test, string messageTemplate)
+        // {
+        //     Debug.Assert(test != null, nameof(test) + " != null");
+        //     if (!test.Invoke(Value))
+        //     {
+        //         AddError(string.Format(messageTemplate, Value));
+        //     }
+        //
+        //     return this;
+        // }
     }
 }

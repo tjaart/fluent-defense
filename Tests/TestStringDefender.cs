@@ -8,7 +8,8 @@ namespace Tests
         [Fact]
         public void TestMinLength()
         {
-            Assert.True("12345".Defend("test").MinLength(5).IsValid);
+            var stringParam = "12345";
+            Assert.True(stringParam.Defend().MinLength(5).IsValid);
         }
 
         [Fact]

@@ -35,5 +35,14 @@ namespace Tests
         {
             Assert.Throws<Exception>(() => 5.Defend("asd").InRange(5, 4).IsValid);
         }
+
+        [Fact]
+        public void CustomCheck()
+        {
+            var result = 35.Defend()
+                .DivisibleBy10();
+
+            
+        }
     }
 }

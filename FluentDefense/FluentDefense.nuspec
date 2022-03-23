@@ -3,15 +3,15 @@
     <metadata>
         <version>$(appveyor_build_version)</version>
         <id>FluentDefense</id>
-        <authors>Thorium Dev Team</authors>
-        <owners>Thorium Dev Team</owners>
-        <licenseUrl>https://raw.githubusercontent.com/ThoriumStack/fluent-defense/master/LICENSE</licenseUrl>
+        <authors>Tjaart Blignaut</authors>
+        <owners>Tjaart Blignaut</owners>
+        <licenseUrl>https://github.com/tjaart/fluent-defense/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/ThoriumStack/fluent-defense</projectUrl>
         <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A library that makes defensive programming easier.</description>
         <releaseNotes>Initial release.</releaseNotes>
-        <copyright>Copyright 2019</copyright>
+        <copyright>Copyright 2022</copyright>
         <tags>defensive-programming</tags>
     </metadata>
 </package>

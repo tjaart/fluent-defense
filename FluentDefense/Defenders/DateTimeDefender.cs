@@ -4,7 +4,10 @@ namespace FluentDefense.Defenders
 {
     public class DateTimeDefender : DefenderBase
     {
-        private DateTime? _value;
+        private readonly DateTime? _value;
+        
+        public static Func<DateTime> MomentGenerator { get; set; } = () => DateTime.Now;
+        public static Func<DateTime> MomentGeneratorUtc { get; set; } = () => DateTime.UtcNow;
 
         public DateTimeDefender(DateTime? value, string parameterName) : base(parameterName)
         {
@@ -15,7 +18,7 @@ namespace FluentDefense.Defenders
         {
             if (!_value.HasValue)
             {
-                AddError($"{_parameterName} cannot be null");
+                AddError($"{ParameterName} cannot be null");
             }
 
             return this;
@@ -24,7 +27,7 @@ namespace FluentDefense.Defenders
         public DateTimeDefender IsInFuture()
         {
             NotNull();
-            if (_value == null || _value.Value <= DateTime.Now)
+            if (_value == null || _value.Value <= MomentGenerator())
             {
                 AddError($"{_value} is not a future date.");
             }
@@ -46,9 +49,9 @@ namespace FluentDefense.Defenders
         public DateTimeDefender IsInFutureUtc()
         {
             NotNull();
-            if (_value == null || _value.Value <= DateTime.UtcNow)
+            if (_value == null || _value.Value <= MomentGeneratorUtc())
             {
-                AddError($"{_value} is not a future date.");
+                AddError($"{_value} is not a UTC future date.");
             }
 
             return this;
@@ -57,7 +60,7 @@ namespace FluentDefense.Defenders
         public DateTimeDefender IsInPastUtc()
         {
             NotNull();
-            if (_value == null || _value.Value >= DateTime.UtcNow)
+            if (_value == null || _value.Value >= MomentGeneratorUtc())
             {
                 AddError($"{_value} is not a future date.");
             }
@@ -68,7 +71,7 @@ namespace FluentDefense.Defenders
         public DateTimeDefender NotDefault()
         {
             NotNull();
-            if (_value == null || _value.Value == default(DateTime))
+            if (_value == null || _value.Value == default)
             {
                 AddError($"{_value} was never initialized.");
             }

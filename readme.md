@@ -11,7 +11,7 @@ https://weblogs.asp.net/fredriknormen/defensive-programming-and-design-by-contra
 
 ## Getting Started
 
-1. Install the Thorium.FluentDefense package https://www.nuget.org/packages/Thorium.FluentDefense
+1. Install the FluentDefense package https://www.nuget.org/packages/Thorium.FluentDefense
 2. Include the using statement for the defensive extensions: `using Thorium.FluentDefense`
 
 ## Example Code
@@ -22,22 +22,22 @@ public void EnableAuthentication(string tokenBaseUrl, string clientId, string cl
             _tokenBaseUrl = tokenBaseUrl;
             
             tokenBaseUrl
-                .Defend(nameof(tokenBaseUrl))
+                .Defend()
                 .ValidUri()
                 .Throw(); // throw an exception if any of the validations fail
 
             clientId
-                .Defend(nameof(clientId))
+                .Defend("client id") // you can also specify the argument name
                 .NotNullOrEmpty()
                 .ErrorMessage; // Get a single string newline seperated list of errors.
 
             var errors = clientSecret
-                .Defend(nameof(clientSecret))
+                .Defend()
                 .NotNullOrEmpty()
                 .Errors; // get a list of errors
 
             appName
-                .Defend(nameof(appName))
+                .Defend()
                 .NotNullOrEmpty()
                 .Throw();
 

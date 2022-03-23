@@ -1,32 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace FluentDefense
 {
     public abstract class DefenderBase
     {
-        protected string _parameterName;
+        protected readonly string ParameterName;
 
         private readonly List<string> _messages = new List<string>();
 
         protected DefenderBase(string parameterName)
         {
-            _parameterName = parameterName;
+            ParameterName = parameterName;
         }
 
         /// <summary>
         /// Throw an exception if any of the validations fail
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
+        [StackTraceHidden]
+        [DebuggerHidden]
         public void Throw()
         {
             if (!_messages.Any())
             {
                 return;
             }
-            throw new  ArgumentException(ErrorMessage, _parameterName);
+            JustThrow();
         }
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        [DebuggerHidden]
+        protected void JustThrow() 
+            => throw new ArgumentException(ErrorMessage, ParameterName);
 
         private List<string> GetFinalList()
         {
@@ -36,7 +46,7 @@ namespace FluentDefense
                 return finalList;
             }
 
-            finalList.Add($"{_parameterName} is invalid.");
+            finalList.Add($"{ParameterName} is invalid.");
             finalList.AddRange(_messages);
             return finalList;
         }
@@ -72,6 +82,39 @@ namespace FluentDefense
         protected void AddError(string errorMessage)
         {
             _messages.Add(errorMessage);
+        }
+    }
+
+    public abstract class DefenderBase<TDefender, TValue> : DefenderBase 
+    where TDefender : DefenderBase<TDefender, TValue>
+    {
+        protected readonly TValue Value;
+
+        protected DefenderBase(string parameterName, TValue value) : base(parameterName)
+        {
+            Value = value;
+        }
+        
+        public TValue ValueOrThrow()
+        {
+            if (IsValid)
+            {
+                return Value;
+            }
+
+            JustThrow();
+            return default;
+        }
+        
+        public TDefender Custom(Func<TValue, bool> test, string messageTemplate)
+        {
+            Debug.Assert(test != null, nameof(test) + " != null");
+            if (!test.Invoke(Value))
+            {
+                AddError(string.Format(messageTemplate, Value));
+            }
+
+            return (TDefender)this;
         }
     }
 }

@@ -5,23 +5,21 @@ namespace FluentDefense.Defenders
 {
     public class StringDefender : DefenderBase
     {
-        private string _str;
-        private string _parameterName;
+        private readonly string _str;
 
         public StringDefender(string s, string parameterName) : base(parameterName)
         {
             _str = s;
-            _parameterName = parameterName;
         }
 
-        public StringDefender ValidUri(UriKind uriKind=UriKind.Absolute)
+        public StringDefender ValidUri(UriKind uriKind = UriKind.Absolute)
         {
-            NotNullOrEmpty();
+            NotNullOrWhiteSpace();
             if (!Uri.TryCreate(_str, uriKind, out _))
             {
                 AddError($"\"{_str}\" Uri invalid.");
             }
-            
+
             return this;
         }
 
@@ -29,26 +27,29 @@ namespace FluentDefense.Defenders
         {
             if (string.IsNullOrWhiteSpace(_str))
             {
-                AddError($"{_parameterName} cannot be null or whitespace.");
+                AddError($"{ParameterName} cannot be null or whitespace.");
             }
+
             return this;
         }
-        
+
         public StringDefender NotNull()
         {
             if (_str == null)
             {
-                AddError($"{_parameterName} cannot be null.");
+                AddError($"{ParameterName} cannot be null.");
             }
+
             return this;
         }
-        
+
         public StringDefender NotNullOrEmpty()
         {
             if (string.IsNullOrEmpty(_str))
             {
-                AddError($"{_parameterName} cannot be null or empty.");
+                AddError($"{ParameterName} cannot be null or empty.");
             }
+
             return this;
         }
 
@@ -56,7 +57,7 @@ namespace FluentDefense.Defenders
         {
             if (validator(_str))
             {
-                AddError(string.Format(messageTemplate, _parameterName));
+                AddError(string.Format(messageTemplate, ParameterName));
             }
 
             return this;
@@ -64,7 +65,8 @@ namespace FluentDefense.Defenders
 
         public StringDefender ValidEmail()
         {
-            try {
+            try
+            {
                 var addr = new System.Net.Mail.MailAddress(_str);
                 return this;
             }
@@ -95,7 +97,7 @@ namespace FluentDefense.Defenders
 
             return this;
         }
-        
+
         public StringDefender MaxLength(int maxLength)
         {
             NotNull();
