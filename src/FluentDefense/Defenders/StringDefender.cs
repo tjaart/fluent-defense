@@ -66,6 +66,7 @@ public class StringDefender : DefenderBase<StringDefender, string?>
 
     public StringDefender MatchesRegex(string pattern)
     {
+        NotNull();
         if (!Regex.IsMatch(Value, pattern))
         {
             AddError($"\"{Value}\" does not match required pattern \"{pattern}\"");

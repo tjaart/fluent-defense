@@ -4,11 +4,8 @@ namespace FluentDefense.Defenders;
 
 public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
 {
-    private readonly DateTime? _value;
-
     public DateTimeDefender(DateTime? value, string parameterName) : base(parameterName, value)
     {
-        _value = value;
     }
 
     public static Func<DateTime> Now { get; set; } = () => DateTime.Now;
@@ -16,7 +13,7 @@ public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
 
     public DateTimeDefender NotNull()
     {
-        if (!_value.HasValue)
+        if (!Value.HasValue)
         {
             AddError($"{ParameterName} cannot be null");
         }
@@ -27,9 +24,9 @@ public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
     public DateTimeDefender IsInFuture()
     {
         NotNull();
-        if (_value == null || _value.Value <= Now())
+        if (Value == null || Value.Value <= Now())
         {
-            AddError($"{_value} is not a future date.");
+            AddError($"{Value} is not a future date.");
         }
 
         return this;
@@ -38,9 +35,9 @@ public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
     public DateTimeDefender IsInPast()
     {
         NotNull();
-        if (_value == null || _value.Value >= DateTime.Now)
+        if (Value == null || Value.Value >= DateTime.Now)
         {
-            AddError($"{_value} is not a future date.");
+            AddError($"{Value} is not a future date.");
         }
 
         return this;
@@ -49,9 +46,9 @@ public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
     public DateTimeDefender IsInFutureUtc()
     {
         NotNull();
-        if (_value == null || _value.Value <= NowUtc())
+        if (Value == null || Value.Value <= NowUtc())
         {
-            AddError($"{_value} is not a UTC future date.");
+            AddError($"{Value} is not a UTC future date.");
         }
 
         return this;
@@ -60,9 +57,9 @@ public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
     public DateTimeDefender IsInPastUtc()
     {
         NotNull();
-        if (_value == null || _value.Value >= NowUtc())
+        if (Value == null || Value.Value >= NowUtc())
         {
-            AddError($"{_value} is not a future date.");
+            AddError($"{Value} is not a future date.");
         }
 
         return this;
@@ -71,9 +68,9 @@ public class DateTimeDefender : DefenderBase<DateTimeDefender, DateTime?>
     public DateTimeDefender NotDefault()
     {
         NotNull();
-        if (_value == null || _value.Value == default)
+        if (Value == null || Value.Value == default)
         {
-            AddError($"{_value} was never initialized.");
+            AddError($"{Value} was never initialized.");
         }
 
         return this;

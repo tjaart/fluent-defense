@@ -98,8 +98,11 @@ public abstract class DefenderBase<TDefender, TValue> : DefenderBase
 
     protected DefenderBase(string parameterName, TValue value) : base(parameterName)
     {
-        parameterName.Defend()
-            .NotNullOrWhiteSpace();
+        if (parameterName == null)
+        {
+            throw new ArgumentNullException(nameof(parameterName));
+        }
+
         Value = value;
     }
 
