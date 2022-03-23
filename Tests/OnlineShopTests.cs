@@ -9,7 +9,7 @@ public class OnlineShopTests
     public void TestOnlineShop()
     {
         var onlineShop = new OnlineShop();
-        onlineShop.OrderItem(2350, 15, DateTime.UtcNow, DateTime.UtcNow);
+        onlineShop.OrderItem(12350, 15, DateTime.UtcNow, DateTime.UtcNow);
 
     }
 }
