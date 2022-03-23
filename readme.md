@@ -20,7 +20,7 @@ https://weblogs.asp.net/fredriknormen/defensive-programming-and-design-by-contra
 2. Include the using statement for the defensive extensions: `using Thorium.FluentDefense`
 
 ## A note about compatibility
-Note that this library is only supported on dotnet 6+ and will likely not be backward compatible in newer versions. If you would like multitargeting, you may contribute or request backward compat from me, for a reasonable fee.
+Note that this library is only supported on dotnet 6+ and will likely not be backward compatible in newer versions. If you would like multitargeting, you may contribute or request backward compat from me. Since this is a hobby project, I cannot realistically support production usage besides my own.
 
 ## Example Code
 
