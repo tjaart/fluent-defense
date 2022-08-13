@@ -11,7 +11,11 @@ public class PersonDefender : DefenderBase<PersonDefender, Person>
     // create a method for the defender, returning itself back to the caller
     public PersonDefender HasValidName()
     {
-        if (Value.Name?.Length < 2)
+        if (Value.Name is null)
+        {
+            AddError("Name was not supplied for person.");
+        }
+        else if (Value.Name?.Length < 2)
         {
             // add any errors you need
             AddError($"'{Value.Name}' is not a valid name for person '{ParameterName}'. Name must have at least two characters and not be null");
