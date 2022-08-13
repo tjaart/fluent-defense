@@ -1,25 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Version>$(appveyor_build_version)</Version>
-    <Authors>Tjaart Blignaut</Authors>
-    <Company>Tjaart Blignaut</Company>
-    <Product>Fluent Defense</Product>
-    <PackageId>FluentDefense</PackageId>
-    <AssemblyVersion>$(appveyor_build_version)</AssemblyVersion>
-    <FileVersion>$(appveyor_build_version)</FileVersion>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Description>Fluent Defensive Programming</Description>
-    <Copyright>Copyright</Copyright>
-      <PackageLicenseUrl>https://github.com/tjaart/fluent-defense/master/LICENSE</PackageLicenseUrl>
-      <PackageProjectUrl>https://github.com/tjaart/fluent-defense</PackageProjectUrl>
-      <RepositoryUrl>https://github.com/tjaart/fluent-defense</RepositoryUrl>
-      <PackageTags>defensive-programming</PackageTags>
-      <PackageReleaseNotes>Release</PackageReleaseNotes>
-      <TargetFramework>net6.0</TargetFramework>
-      <LangVersion>10</LangVersion>
-      <Nullable>enable</Nullable>
-      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Version>$(appveyor_build_version)</Version>
+        <Authors>Tjaart Blignaut</Authors>
+        <Company>Tjaart Blignaut</Company>
+        <Product>Fluent Defense</Product>
+        <PackageId>FluentDefense</PackageId>
+        <AssemblyVersion>$(appveyor_build_version)</AssemblyVersion>
+        <FileVersion>$(appveyor_build_version)</FileVersion>
+        <NeutralLanguage>en</NeutralLanguage>
+        <Description>Fluent Defensive Programming</Description>
+        <Copyright>Copyright</Copyright>
+        <Copyright>Copyright</Copyright>
+        <PackageLicenseUrl>https://github.com/tjaart/fluent-defense/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/tjaart/fluent-defense</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/tjaart/fluent-defense</RepositoryUrl>
+        <PackageTags>defensive-programming</PackageTags>
+        <PackageReleaseNotes>Release</PackageReleaseNotes>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>10</LangVersion>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0"/>
     </ItemGroup>
