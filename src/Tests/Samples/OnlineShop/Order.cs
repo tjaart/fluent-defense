@@ -1,6 +1,6 @@
 using System;
 using FluentDefense;
-using Tests.Samples.CountryCode;
+using Tests.Samples.OnlineShop.CountryCode;
 
 namespace Tests.Samples.OnlineShop;
 

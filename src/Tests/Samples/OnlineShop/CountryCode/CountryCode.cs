@@ -1,6 +1,6 @@
 using FluentDefense;
 
-namespace Tests.Samples.CountryCode;
+namespace Tests.Samples.OnlineShop.CountryCode;
 
 public readonly record struct CountryCode
 {

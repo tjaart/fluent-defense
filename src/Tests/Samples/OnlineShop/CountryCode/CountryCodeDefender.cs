@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FluentDefense;
 using JetBrains.Annotations;
 
-namespace Tests.Samples.CountryCode;
+namespace Tests.Samples.OnlineShop.CountryCode;
 
 public class CountryCodeDefender : DefenderBase<CountryCodeDefender, CountryCode>
 {

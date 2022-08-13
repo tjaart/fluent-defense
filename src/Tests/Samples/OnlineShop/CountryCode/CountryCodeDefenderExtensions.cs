@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Tests.Samples.CountryCode;
+namespace Tests.Samples.OnlineShop.CountryCode;
 
 public static class CountryCodeDefenderExtensions
 {

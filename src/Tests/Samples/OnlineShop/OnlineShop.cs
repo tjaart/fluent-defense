@@ -9,9 +9,9 @@ public class OnlineShop
     {
         itemId.Defend()
             .NotZero()
+            .Custom(i => i.ToString().Length == 5, (_, _) => "Order ids must be five digits")
             .NotNegative()
             .IsEven()
-            .Custom(i => i.ToString().Length == 5, (_, _) => "Order ids must be five digits")
             .Throw();
 
         orderDate.Defend()
